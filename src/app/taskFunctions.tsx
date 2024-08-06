@@ -4,15 +4,15 @@ import React, { useState } from 'react';
 
 export function TaskFunctions() {
 	const [taskName, setTaskName] = useState<string>('');
-	const [taskUndoneList, setTaskUndoneList] = useState<string[]>([]);
-	const [taskDoneList, setTaskDoneList] = useState<string[]>([]);
+	const [taskUndoneList, setTaskUndoneList] = useState<[number, string][]>([]);
+	const [taskDoneList, setTaskDoneList] = useState<[number, string][]>([]);
 
 	//
 	// ===== Add Task to Undone List ===== //
 	//
 	function addTask() {
 		if (taskName !== '') {
-			setTaskUndoneList([...taskUndoneList, taskName]);
+			setTaskUndoneList([...taskUndoneList, [taskUndoneList.length, taskName]]);
 		}
 		setTaskName('');
 	}
