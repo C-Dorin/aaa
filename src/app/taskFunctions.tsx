@@ -4,15 +4,15 @@ import React, { useState } from 'react';
 
 export function TaskFunctions() {
 	const [taskName, setTaskName] = useState<string>('');
-	const [taskUndoneList, setTaskUndoneList] = useState<[number, string][]>([]);
-	const [taskDoneList, setTaskDoneList] = useState<[number, string][]>([]);
+	const [taskUndoneList, setTaskUndoneList] = useState<string[]>([]);
+	const [taskDoneList, setTaskDoneList] = useState<string[]>([]);
 
 	//
 	// ===== Add Task to Undone List ===== //
 	//
 	function addTask() {
 		if (taskName !== '') {
-			setTaskUndoneList([...taskUndoneList, [taskUndoneList.length, taskName]]);
+			setTaskUndoneList([...taskUndoneList, taskName]);
 		}
 		setTaskName('');
 	}
@@ -49,36 +49,22 @@ export function TaskFunctions() {
 	//
 	// From Undone to Done List
 	function doneTask(index: number) {
-		if (index < 0 || index >= taskUndoneList.length) return;
-
-		const newItem = taskUndoneList[index];
-		if (newItem) {
-			newItem[0] = taskDoneList.length | 0;
-
-			setTaskDoneList((prevTaskDoneList) => [...prevTaskDoneList, newItem]);
-			setTaskUndoneList((prevTaskUndoneList) => {
-				const newTaskUndoneList = [...prevTaskUndoneList];
-				newTaskUndoneList.splice(index, 1);
-				return newTaskUndoneList;
-			});
-		}
+		setTaskDoneList((prevTaskDoneList) => [...prevTaskDoneList, taskUndoneList[index]]);
+		setTaskUndoneList((prevTaskUndoneList) => {
+			const newTaskUndoneList = [...prevTaskUndoneList];
+			newTaskUndoneList.splice(index, 1);
+			return newTaskUndoneList;
+		});
 	}
 
 	// From Done to Undone List
 	function undoneTask(index: number) {
-		if (index < 0 || index >= taskDoneList.length) return;
-
-		const newItem = taskDoneList[index];
-		if (newItem) {
-			newItem[0] = taskUndoneList.length | 0;
-
-			setTaskUndoneList((prevTaskUndoneList) => [...prevTaskUndoneList, newItem]);
-			setTaskDoneList((prevTaskDoneList) => {
-				const newTaskDoneList = [...prevTaskDoneList];
-				newTaskDoneList.splice(index, 1);
-				return newTaskDoneList;
-			});
-		}
+		setTaskUndoneList((prevTaskUndoneList) => [...prevTaskUndoneList, taskDoneList[index]]);
+		setTaskDoneList((prevTaskDoneList) => {
+			const newTaskDoneList = [...prevTaskDoneList];
+			newTaskDoneList.splice(index, 1);
+			return newTaskDoneList;
+		});
 	}
 
 	return {

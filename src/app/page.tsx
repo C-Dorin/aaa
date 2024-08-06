@@ -4,20 +4,26 @@ import React from 'react';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+
+import { Check } from 'lucide-react';
+import { X } from 'lucide-react';
+import { Undo2 } from 'lucide-react';
 
 import { TaskFunctions } from './taskFunctions';
-import DragAndDropList from './DragAndDropList';
 
 export default function Home() {
 	const {
 		taskName,
 		setTaskName,
 		taskUndoneList,
-		setTaskUndoneList,
 		taskDoneList,
-		setTaskDoneList,
 		addTask,
-		handleKeyDown
+		handleKeyDown,
+		deleteUndoneTask,
+		deleteDoneTask,
+		doneTask,
+		undoneTask
 	} = TaskFunctions();
 
 	return (
@@ -56,7 +62,27 @@ export default function Home() {
 										</div>
 									</div>
 								) : (
-									<DragAndDropList items={taskUndoneList} setItems={setTaskUndoneList} />
+									taskUndoneList.map((text, index) => (
+										<Card key={index} className="min-w-92 px-2">
+											<div className="flex justify-between">
+												<div className="pt-0.5">{text}</div>
+												<div className="flex space-x-1">
+													<Button
+														className="bg-slate-700 border h-8 px-1 border-gray-500"
+														onClick={() => doneTask(index)}
+													>
+														<Check className="text-green-600" size={24} />
+													</Button>
+													<Button
+														className="bg-slate-700 border h-8 px-1 border-gray-500"
+														onClick={() => deleteUndoneTask(index)}
+													>
+														<X className="text-red-600" size={24} />
+													</Button>
+												</div>
+											</div>
+										</Card>
+									))
 								)}
 							</div>
 						</div>
@@ -69,7 +95,27 @@ export default function Home() {
 										</div>
 									</div>
 								) : (
-									<DragAndDropList items={taskDoneList} setItems={setTaskDoneList} />
+									taskDoneList.map((text, index) => (
+										<Card key={index} className="min-w-92 px-2">
+											<div className="flex justify-between">
+												<div className="pt-0.5">{text}</div>
+												<div className="flex space-x-1">
+													<Button
+														className="bg-slate-700 border h-8 px-1 border-gray-500"
+														onClick={() => undoneTask(index)}
+													>
+														<Undo2 className="text-orange-500" size={24} />
+													</Button>
+													<Button
+														className="bg-slate-700 border h-8 px-1 border-gray-500"
+														onClick={() => deleteDoneTask(index)}
+													>
+														<X className="text-red-600" size={24} />
+													</Button>
+												</div>
+											</div>
+										</Card>
+									))
 								)}
 							</div>
 						</div>
